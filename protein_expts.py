@@ -87,10 +87,7 @@ water: tip3p                        # which water model (another question from p
 ##
 #
 'metarun':[
-{'step':'protein','do':'protein','settings':"""
-#pdb source: None                    # PDB code for download. overrides the start structure
-#start structure: inputs/3ala.pdb    # path to PDB structure or None to use a single PDB in inputs
-"""},
+{'step':'protein','do':'protein','settings':""""""},
 {'quick':'vmd_protein','settings':"""
 
 step: v01-look
