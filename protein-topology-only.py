@@ -21,6 +21,10 @@ gmx('pdb2gmx',
 	water=settings.water,
 	ff=settings.force_field,
 	log='pdb2gmx')
-extract_itp('system.top')
+itp = extract_itp('system.top')
 #---extract_itp always produces protein.itp
-state.protein_prepared = {'gro':state.here+'vacuum-alone.gro','itp':state.here+'protein.itp'}
+last_call = get_last_gmx_call('pdb2gmx')
+prepped_files = {'itp':state.here+itp}
+for flag,key in [('-i','posre'),('-o','gro')]: 
+	prepped_files[key] = state.here+last_call['flags'][flag]
+state.protein_prepared = prepped_files
