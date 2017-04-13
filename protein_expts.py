@@ -17,7 +17,7 @@ force field: charmm27               # which gromacs-standard force-field to use 
 water: tip3p                        # which water model (another question from pdb2gmx)
 equilibration: nvt-short,nvt,npt    # which equilibration step to use (must have `input-name-in.mdp` below)
 pdb source: 1yrf                    # PDB code for download. overrides the start structure
-start structure: None               # path to PDB structure or None to use a single PDB in inputs
+start structure: none               # path to PDB structure or None to use a single PDB in inputs
 protein water gap: 3.0              # Angstroms distance around the protein to remove water
 water buffer: 1.2                   # distance (nm) of solvent to the box wall 
 solvent: spc216                     # starting solvent box (use spc216 from gromacs share)
