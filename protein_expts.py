@@ -6,7 +6,7 @@
 ###
 ##
 #
-'tags':['aamd','protein'],
+'tags':['aamd','protein','tested_2017.09.14'],
 'script':'protein.py',
 'params':'parameters.py',
 'extensions':[],
@@ -46,7 +46,7 @@ mdp_specs:| {
 ##
 #
 #
-'tags':['aamd','landscape'],
+'tags':['aamd','tag_!?aamd','landscape'],
 'params':'@bilayers/parameters.py',
 'extensions':[
 	'@charmm/landscape.py'],
@@ -68,7 +68,7 @@ lipids: ['DOPC','DOPS','PI2P','CHL1','DOPE','POPC']
 ###
 ##
 #
-'tags':['aamd','protein'],
+'tags':['aamd','protein','tag_!?aamd'],
 'script':'protein-topology-only.py',
 'params':None,
 'extensions':[],
@@ -86,6 +86,7 @@ water: tip3p                        # which water model (another question from p
 ###
 ##
 #
+'tags':['aamd','tag_?!protein'],
 'metarun':[
 {'step':'protein','do':'protein','settings':""""""},
 {'quick':'vmd_protein','settings':"""
