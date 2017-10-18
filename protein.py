@@ -45,4 +45,3 @@ write_structure_pdb(
 	structure='counterions')
 write_top('system.top')
 equilibrate()
-finished(state)
