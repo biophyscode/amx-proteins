@@ -6,7 +6,8 @@
 ###
 ##
 #
-'tags':['aamd','protein','tested_2017.09.14'],
+'tags':['aamd','protein','tested_2017.09.14','tested_2017.10.18.1800_dev'],
+#---duration is 4.8min on dark
 'script':'protein.py',
 'params':'parameters.py',
 'extensions':[],
@@ -39,36 +40,13 @@ mdp_specs:| {
 	}
 """},
 
-'generate_charmm_landscape':{
-#####
-####
-###
-##
-#
-#
-'tags':['aamd','landscape'],
-'params':'@bilayers/parameters.py',
-'extensions':[
-	'@charmm/landscape.py'],
-'quick':"""
-
-from amx import *
-init()
-write_charmm_landscape()
-
-""",
-'settings':"""
-landscape at: @charmm/landscape.json
-lipids: ['DOPC','DOPS','PI2P','CHL1','DOPE','POPC']
-""",},
-
 'bilayer_protein_topology_only':{
 #####
 ####
 ###
 ##
 #
-'tags':['aamd','protein'],
+'tags':['aamd','protein','test'],
 'script':'protein-topology-only.py',
 'params':None,
 'extensions':[],
@@ -80,13 +58,13 @@ water: tip3p                        # which water model (another question from p
 
 """},
 
-'trialanine-demo':{
+'trialanine_demo':{
 #####
 ####
 ###
 ##
 #
-'tags':['aamd'],
+'tags':['aamd','tested_2017.10.18.1745_dev'],
 'metarun':[
 {'step':'protein','do':'protein','settings':""""""},
 {'quick':'vmd_protein','settings':"""
