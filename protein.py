@@ -44,4 +44,5 @@ write_structure_pdb(
 	pdb='start-structure.pdb',
 	structure='counterions')
 write_top('system.top')
+write_continue_script()
 equilibrate()
