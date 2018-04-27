@@ -6,8 +6,9 @@
 ###
 ##
 #
-'tags':['aamd','protein','tested_2017.09.14','tested_2017.10.18.1800_dev'],
-#---duration is 4.8min on dark
+'tags':['aamd','protein',
+	#'tested_2017.09.14','tested_2017.10.18.1800_dev',
+	'tested_2018.04.25'], # 4.8 min
 'script':'protein.py',
 'params':'parameters.py',
 'extensions':[],
@@ -26,7 +27,7 @@ ionic strength: 0.150               # desired molar ionic strength
 cation: NA                          # name of the cation for neutralizing the system
 anion: CL                           # name of the anion for neutralizing the system
 
-#---INTEGRATOR PARAMETERS generated via parameters.py
+# integrator generated via parameters.py
 mdp_specs:| {
 	'group':'aamd',
 	'mdps':{
