@@ -23,7 +23,7 @@ gmx('pdb2gmx',
 	log='pdb2gmx')
 itp = extract_itp('system.top')
 #---extract_itp always produces protein.itp
-last_call = get_last_gmx_call('pdb2gmx')
+last_call = gmx_get_last_call('pdb2gmx')
 prepped_files = {'itp':state.here+itp}
 for flag,key in [('-i','posre'),('-o','gro')]: 
 	prepped_files[key] = state.here+last_call['flags'][flag]
