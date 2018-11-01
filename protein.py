@@ -6,8 +6,6 @@ Atomistic protein in water.
 """
 
 from amx import *
-
-init()
 make_step(settings.step)
 write_mdp()
 if state.pdb_source: get_pdb(state.pdb_source)
