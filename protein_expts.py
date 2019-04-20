@@ -1,4 +1,4 @@
-{
+
 
 'protein':{
 #####
@@ -26,6 +26,7 @@ solvent: spc216                     # starting solvent box (use spc216 from grom
 ionic strength: 0.150               # desired molar ionic strength
 cation: NA                          # name of the cation for neutralizing the system
 anion: CL                           # name of the anion for neutralizing the system
+maxwarn: 2                          # added on 2019.04.20 for compatibility with gromacs 2018.3
 
 # integrator generated via parameters.py
 mdp_specs:| {
