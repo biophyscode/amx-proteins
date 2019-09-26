@@ -11,57 +11,17 @@ from amx import *
 import re,shutil,glob,textwrap
 from ortho import Handler,bash
 
-### HELPERS
-
-def get_start_structure(path):
-	"""
-	Get a start structure or auto-detect a single PDB in the inputs folder.
-	"""
-	if path: 
-		altpath = os.path.join(globals().get(
-			'expt',{}).get('cwd_source','./'),path)
-	else: altpath = None
-	if path and os.path.isfile(path): fn = path
-	elif altpath and os.path.isfile(altpath): fn = altpath
-	else: 
-		fns = glob.glob('inputs/*.pdb')
-		if len(fns)>1: raise Exception('multiple PDBs in inputs')
-		elif len(fns)==0: raise Exception('no PDBs in inputs')
-		else: fn = fns[0]
-	shutil.copy(fn,os.path.join(state.here,''))
-	shutil.copyfile(fn,os.path.join(state.here,'start-structure.pdb'))
-
-### SETTINGS
-
+# settings
 target_name = 'target'
 template_pdb = 'start-structure.pdb'
-
-### MAIN
 
 # track mutation state
 if state.mutation: 
 	raise Exception('preexisting mutation state: %s'%str(state.mutation))
 state.mutation = {}
 
-make_step(settings.step)
-
-# check for PDB code or path
-is_pdb = (settings.start_structure!=None 
-	and re.match('^[A-Za-z0-9]{4}$',settings.start_structure.strip())!=None)
-is_path = (settings.start_structure==None 
-	or os.path.isfile(settings.start_structure))
-if is_path + is_pdb != 1:
-	raise Exception(
-		'is_pdb = %s, is_path = %s, settings.start_structure = %s'%(
-		is_path,is_pdb,settings.start_structure))
-# collect the structure
-if is_path or settings.start_structure==None:
-	#! fix the above
-	get_start_structure(settings.start_structure)
-elif is_pdb:
-	# clean the PDB code here
-	settings.start_structure = settings.start_structure.strip().upper()
-	get_pdb(settings.start_structure)
+make_step()
+interpret_start_structure()
 
 # get the sequence
 import Bio

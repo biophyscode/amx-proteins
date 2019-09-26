@@ -6,10 +6,10 @@ Atomistic protein in water.
 """
 
 from amx import *
-make_step(settings.step)
+
+make_step()
 write_mdp()
-if state.pdb_source: get_pdb(state.pdb_source)
-else: get_start_structure(state.start_structure)
+interpret_start_structure()
 remove_hetero_atoms(
 	structure='start-structure.pdb',
 	out='start-structure-trim.pdb')

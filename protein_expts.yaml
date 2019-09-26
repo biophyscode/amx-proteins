@@ -7,15 +7,14 @@ protein:
   params: parameters.py
   settings:
     step: protein                       # name of the folder is s01-protein
-    force field: charmm27               # which gromacs-standard force-field to use (see pdb2gmx list)
+    force_field: charmm27               # which gromacs-standard force-field to use (see pdb2gmx list)
     water: tip3p                        # which water model (another question from pdb2gmx)
     equilibration: "nvt-short,nvt,npt"  # equilibration steps via input-<name>-in.mdp in mdp_specs below
-    pdb source: 1yrf                    # PDB code for download. overrides the start structure
-    start structure: none               # path to PDB structure or None to use a single PDB in inputs
-    protein water gap: 3.0              # Angstroms distance around the protein to remove water
-    water buffer: 1.2                   # distance (nm) of solvent to the box wall 
+    start_structure: 1yrf               # PDB code or path to PDB (null checks inputs)
+    protein_water gap: 3.0              # Angstroms distance around the protein to remove water
+    water_buffer: 1.2                   # distance (nm) of solvent to the box wall 
     solvent: spc216                     # starting solvent box (use spc216 from gromacs share)
-    ionic strength: 0.150               # desired molar ionic strength
+    ionic_strength: 0.150               # desired molar ionic strength
     cation: NA                          # name of the cation for neutralizing the system
     anion: CL                           # name of the anion for neutralizing the system
     maxwarn: 1    #! dev: warning handling
@@ -82,5 +81,5 @@ alk_sim:
         step: mutate
     - extends: protein
       settings:
-        start_structure: ~previous/structure-out.pdb
+        start_structure: s01-mutate/structure-out.pdb
         step: simulate
