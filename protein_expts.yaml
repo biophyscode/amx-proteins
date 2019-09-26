@@ -18,7 +18,8 @@ protein:
     ionic strength: 0.150               # desired molar ionic strength
     cation: NA                          # name of the cation for neutralizing the system
     anion: CL                           # name of the anion for neutralizing the system
-    maxwarn: 1       #!!! develop warning handling. this specifically intends to avoid net charge warning on minimize
+    maxwarn: 1    #! dev: warning handling
+                  #! this specifically intends to avoid net charge warning on minimize
     mdp specs:
       group: aamd
       mdps:
@@ -28,3 +29,58 @@ protein:
         input-md-nvt-short-eq-in.mdp: ['nvt-protein-short',{'nsteps':10000}]
         input-md-npt-eq-in.mdp: ['npt-protein',{'nsteps':10000}]
         input-md-in.mdp: {'nsteps':100000}
+
+mutation_basic_alk:
+  notes: |
+    Under maintenance and development.
+    Previously we used homology_tools.py from the homology repo.
+    The current version is heavily simplified.
+    The input PDB must start at residue 1 or the start_position noted below.
+    Previous versions included a "template_chain" option.
+  script: homology_basic.py
+  settings:
+    # we call an external modeller script
+    modeller_script: inputs/proteins/modeller_mutation_script.py
+    step: mutate
+    # start structure should be a PDB code or relative path
+    # the start_structure default (null) will check inputs for a single PDB
+    start_structure: null
+    # annotate the start structure here
+    sequence_check: 
+      subseq: RTSTIMT
+      start: 1084
+    mutations: {'A':['L1196M']}
+    refinement: fast
+
+mutation_basic_mek:
+  notes: See mutation_basic_alk for details.
+  script: homology_basic.py
+  settings:
+    modeller_script: inputs/proteins/modeller_mutation_script.py
+    step: mutate
+    start_structure: 4ARK
+    sequence_check: 
+      subseq: MELKDDD
+      start: 61
+      chain: A
+      # explicit target for ali file can have mutations already applied
+      target: |
+        MELKDDDFEKISELGAGNGGVVFKVSHKPSGLVMARKLIHLEIKPAIRNQIIRELQVLHECNSPYIVGFYGAFYSDGEISICMEHMDGGSLDQVLKKAGRIPEQILGKVSIAVIKGLTYLREKHKIMHRDVKPSNILVNSRGEIKLCDFGVSGQLIDSMANSFVGTRSYMSPERLQGTHYSVQSDIWSMGLSLVEMAVGRYPIPPPDAKELELMFGCQVEGDAAETPPRPRTPGRPLSSYGMDSRPPMAIFELLDYIVNEPPPKLPSGVFSLEFQDFVNKCLIKNPAERADLKQLMVHAFIKRSDAEEVDFAGWLCSTIGLNQPSTPTHAAGVLEHHHHHH
+      #! dev: explain the PDB target until we write code to extract this
+      actual: |
+        MELKDDDFEKISELGAGNGGVVFKVSHKPSGLVMARKLIHLEIKPAIRNQIIRELQVLHECNSPYIVGFYGAFYSDGEISICMEHMDGGSLDQVLKKAGRIPEQILGKVSIAVIKGLTYLREKHKIMHRDVKPSNILVNSRGEIKLCDFGVSGQLIDSMANSFVGTRSYMSPERLQGTHYSVQSDIWSMGLSLVEMAVGRYPIPPPDAKELELMF-------------------------------PMAIFELLDYIVNEPPPKLPSGVFSLEFQDFVNKCLIKNPAERADLKQLMVHAFIKRSDAEEVDFAGWLCSTIGLN--------------------
+    mutations: {'A':['P124L']}
+    refinement: fast
+
+alk_sim:
+  notes: |
+    This experiment does homology modeling followed by simulation.
+    It is set to use the ALK mutation example above.
+  metarun:
+    - extends: mutation_basic_alk
+      settings: 
+        step: mutate
+    - extends: protein
+      settings:
+        start_structure: ~previous/structure-out.pdb
+        step: simulate
