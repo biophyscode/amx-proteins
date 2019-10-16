@@ -111,6 +111,7 @@ for chain,mutations in settings.mutations.items():
 		print('status applying mutation %s'%mutation)
 		seq_target[pos_rel] = mutate['target']
 # set the sequences
+#! dev note: clarify seq_target, seq_template, pdb_seq 
 seq_target = ''.join(seq_target)
 seq_template = state.mutation['seq']
 
@@ -130,11 +131,11 @@ with open(state.here+'%s.ali'%target_name,'w') as fp:
 		end_resid=state.mutation['start_position']+len(seq),
 		end_chain=''))
 	# write the target
-	fp.write(template_ali%dict(seq=wrap_ali(seq_template,w=75),
+	fp.write(template_ali%dict(seq=wrap_ali(seq_target,w=75),
 		pdb='XXXX',name='target',kind='sequence',
 		start_chain=state.mutation['chain'],
 		start_resid=state.mutation['start_position'],
-		end_resid=state.mutation['start_position']+len(seq_template),
+		end_resid=state.mutation['start_position']+len(seq_target),
 		end_chain=''))
 
 # export settings
