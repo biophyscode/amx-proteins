@@ -87,7 +87,7 @@ else:
 # note that we also use the full sequence in the SeqShifter above
 # the ability to override the full sequence allows extensions and gap filling
 seq = settings.sequence_check.get('target',seq)
-pdb_seq = settings.sequence_check.get('actual',seq)
+seq_template = settings.sequence_check.get('actual',seq)
 
 # apply the mutations
 seq_target = list(seq)
@@ -110,10 +110,8 @@ for chain,mutations in settings.mutations.items():
 		# note that all changes are cumulative
 		print('status applying mutation %s'%mutation)
 		seq_target[pos_rel] = mutate['target']
-# set the sequences
-#! dev note: clarify seq_target, seq_template, pdb_seq 
+# prepare the final sequence
 seq_target = ''.join(seq_target)
-seq_template = state.mutation['seq']
 
 # prepare the ali file
 wrap_ali = lambda x,w=75: '\n'.join(textwrap.wrap(x,width=w))
@@ -123,7 +121,7 @@ template_ali = (">P1;%(name)s\n%(kind)s:%(pdb)s:"
 with open(state.here+'%s.ali'%target_name,'w') as fp: 
 	#! assume one chain
 	# write the template
-	fp.write(template_ali%dict(seq=wrap_ali(pdb_seq,w=75),
+	fp.write(template_ali%dict(seq=wrap_ali(seq_template,w=75),
 		pdb=re.match(r'^(.+)\.pdb',template_pdb).group(1),
 		name='template',kind='structure',
 		start_chain=state.mutation['chain'],
@@ -147,7 +145,7 @@ settings_out = dict(
 	template_name='template',
 	refinement=settings.get('refinement','fast'),
 	renumber_residues=state.mutation['start_position'])
-settings_fn = 'modeller_settings.json'
+settings_fn = state.here+'modeller_settings.json'
 with open(settings_fn,'w') as fp:
 	json.dump(settings_out,fp)
 
@@ -171,5 +169,10 @@ dopes = [i.split()[2] for i in result[1:]]
 best_ind = [ii for ii,i in enumerate(dopes) if i==min(dopes)][0]
 best_fn = results[best_ind].split()[0]
 # best structure is symlinked
-os.symlink(state.here+best_fn,state.here+'structure-out.pdb')
+out_fn = 'structure-out.pdb'
+bash('ln -s %s %s'%(best_fn,out_fn),cwd=state.here,scroll=False)
+# check the link. be careful with symlinks which do not return error if 
+#   malformed when created either with `ln` or with os.symlink
+if not os.path.isfile(state.here+out_fn):
+	raise Exception('failed to link the file from %s to %s'%(best_fn,out_fn))
 print('status homology model is complete and saved to structure-out.pdb')
